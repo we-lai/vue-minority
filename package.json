@@ -1,0 +1,24 @@
+{
+  "name": "vue-minority",
+  "version": "1.0.0",
+  "description": "vue minority components",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/we-lai/vue-minority.git"
+  },
+  "keywords": [
+    "vue",
+    "components",
+    "minority"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/we-lai/vue-minority/issues"
+  },
+  "homepage": "https://github.com/we-lai/vue-minority#readme"
+}
