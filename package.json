@@ -6,19 +6,21 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/we-lai/vue-minority.git"
-  },
+  "repository": "git+https://github.com/we-lai/vue-minority.git",
   "keywords": [
     "vue",
     "components",
     "minority"
   ],
-  "author": "",
+  "author": "Cheng007 <565460621@qq.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/we-lai/vue-minority/issues"
   },
-  "homepage": "https://github.com/we-lai/vue-minority#readme"
+  "homepage": "https://github.com/we-lai/vue-minority#readme",
+  "devDependencies": {
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.7",
+    "webpack-dev-server": "^3.8.0"
+  }
 }
