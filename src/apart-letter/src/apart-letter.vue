@@ -1,5 +1,5 @@
 <template>
-	<div class="apartLetter">
+  <div class="apartLetter">
 		<span
 			contenteditable
 			ref="item"
@@ -15,22 +15,21 @@
 
 <script>
 export default {
-	data() {
-		return {
-			errorMessage: '',
-			focusIndex: 0,
-			value: [],
-		};
-	},
-	props: {
-		maxlength: {
+  name: 'minoApartLetter',
+  data() {
+    return {
+      value: []
+    };
+  },
+  props: {
+    maxlength: {
 			type: Number,
 			default: 5,
 		},
 		autofocus: Boolean,
-	},
-	methods: {
-		getValuesText() {
+  },
+  methods: {
+    getValuesText() {
 			return [...this.$refs.item].map(i => i.textContent);
 		},
 		pasteHandle(e, index) {
@@ -75,8 +74,8 @@ export default {
 		rangeItemToLast(index) {
 			this.rangeToLast(this.$refs.item[index]);
 		},
-	},
-	mounted() {
+  },
+  mounted() {
 		this.value = new Array(this.maxlength).join(',').split(',');
 		if (this.autofocus) {
 			this.$nextTick(() => this.focusIndexItem(0));
@@ -84,25 +83,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="scss">
-$box-size: 3rem;
-$letter-space: .8rem;
-$font-size: 1.8rem;
-.apartLetter {
-	font-size: $font-size;
-	.item {
-		display: inline-block;
-		outline: none;
-		width: $box-size;
-		height: $box-size;
-		line-height: $box-size;
-		border: 1px solid #78879c;
-		border-radius: .25rem;
-		text-align: center;
-		&:not(:last-child) {
-			margin-right: $letter-space;
-		}
-	}
-}
-</style>
