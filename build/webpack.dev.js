@@ -18,6 +18,7 @@ module.exports = {
   devServer: {
     open: true,
     host: '0.0.0.0',
+    progress: true
   },
   module: {
     rules: [
@@ -36,7 +37,25 @@ module.exports = {
       },
       {
         test: /\.md$/,
-        use: []
+        use: [
+          {
+            loader: 'vue-loader',
+            options: {
+              compilerOptions: {
+                preserveWhiteSpace: false
+              }
+            }
+          },
+          {
+            loader: '@tianyong90/vue-markdown-loader',
+            options: {
+              contentCssClass: 'markdown-body',
+              markdown: {
+                lineNumbers: true, // 启用行号
+              }
+            }
+          }
+        ]
       },
       {
         test: /\.(ttf|svg)$/,

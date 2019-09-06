@@ -1,10 +1,13 @@
 <template>
-  <div>你好啊</div>
+  <div>
+
+  </div>
 </template>
 
 <script>
 export default {
-
+  components: {
+  }
 }
 </script>
 
