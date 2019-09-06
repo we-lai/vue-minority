@@ -6,6 +6,7 @@
   "scripts": {
     "bootstrap": "yarn || npm i",
     "create": "node script/create-component.js",
+    "lint": "eslint src examples build script styles --ext .js,.vue",
     "dev": "webpack-dev-server --config build/webpack.dev.js"
   },
   "repository": "git+https://github.com/we-lai/vue-minority.git",
@@ -27,6 +28,8 @@
     "@tianyong90/vue-markdown-loader": "^0.1.3",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
+    "eslint": "^6.3.0",
+    "eslint-plugin-vue": "^5.2.3",
     "gh-pages": "^2.1.1",
     "handlebars": "^4.2.0",
     "html-webpack-plugin": "^3.2.0",
