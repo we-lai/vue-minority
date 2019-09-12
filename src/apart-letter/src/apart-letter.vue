@@ -1,15 +1,23 @@
+// 文字分离的输入框: Ⓐ Ⓑ Ⓒ Ⓓ Ⓔ
 <template>
-  <div class="apartLetter">
-    <span
+  <div class="apartLetterInput">
+    <input
+      ref="input"
+      class="input"
+      :autofocus="autofocus"
+      @keydown="keydownHandle"
+      @blur="blurHandle"
+    >
+    <div
       v-for="(i, index) in value"
       ref="item"
       :key="index"
-      contenteditable
       class="item"
-      @keydown.delete="e => deleteHandle(e, index)"
-      @paste.prevent="e => pasteHandle(e, index)"
-      @input="e => inputHandle(e, index)"
-    >{{ i }}</span>
+      :class="{ 'activated': focusIndex === index }"
+      @click="focusItem(index)"
+    >
+      {{ focusIndex === index ? '' : i }}
+    </div>
   </div>
 </template>
 
@@ -17,69 +25,107 @@
 export default {
   name: 'MinoApartLetter',
   props: {
-    maxlength: {
+		maxlength: {
 			type: Number,
 			default: 5,
 		},
 		autofocus: Boolean,
-  },
-  data() {
+	},
+  data () {
     return {
-      value: []
+      value: [],
+      focusIndex: -1,
     }
   },
-  mounted() {
-		this.value = new Array(this.maxlength).join(',').split(',')
+  mounted () {
+    this.value = new Array(this.maxlength).join(',').split(',');
 		if (this.autofocus) {
-			this.$nextTick(() => this.focusIndexItem(0))
+			this.$nextTick(() => this.focusItem(0));
 		}
-	},
-  methods: {
-    getValuesText() {
-			return [...this.$refs.item].map(i => i.textContent)
-		},
-		pasteHandle(e, index) {
-			const paste = e.clipboardData.getData('text')
-			Array.from(paste).forEach((i, pasteIndex) => this.setItemText(index + pasteIndex, i))
-			this.focusIndexItem(index + paste.length)
-		},
-		inputHandle(e, index) {
-			this.setItemText(index, e.target.textContent)
-			if (e.target.textContent.length) {
-				if (index < this.maxlength - 1) {
-					this.focusIndexItem(index + 1)
-				} else {
-					this.$refs.item[index].blur()
-				}
-			}
-		},
-		setItemText(index = 0, text = '') {
-			if (index < 0 || index >= this.maxlength) return
-			this.$refs.item[index].textContent = text.replace(/\s/, '').slice(0, 1)
-			this.$emit('change', this.getValuesText())
-		},
-		deleteHandle(e, index) {
-			if (e.target.textContent === '' && index > 0) {
-				this.focusIndexItem(index - 1)
-				this.rangeItemToLast(index - 1)
-			}
-		},
-		focusIndexItem(index) {
-			if (index < 0 || index >= this.maxlength) return
-			this.$refs.item[index].focus()
-		},
-		// 光标移至元素最后
-		rangeToLast(element) {
-			if (!(element instanceof Element)) {
-				throw (new TypeError(`${ element } should be Element type`))
-			}
-			const range = window.getSelection()
-			range.selectAllChildren(element)
-			range.collapseToEnd()
-		},
-		rangeItemToLast(index) {
-			this.rangeToLast(this.$refs.item[index])
-		},
   },
+  methods: {
+    keydownHandle(e) {
+      const { key, keyCode } = e
+
+      if (this.focusIndex < 0 || this.focusIndex >= this.maxlength) return
+
+      // 删除字符
+      if (key === 'Backspace') {
+        this.$set(this.value, this.focusIndex, '')
+        this.focusIndex >= 1 ? this.focusIndex -= 1 : this.focusIndex = 0
+
+      }
+
+      // 搜狗类输入法会在 keyCode 为 0 时输入多个 key
+      if (keyCode !== 0 && key.length === 1) {
+        this.$set(this.value, this.focusIndex, key)
+        this.focusIndex < this.maxlength - 1 ? this.focusIndex += 1 : this.focusIndex = -1
+      }
+
+      this.$emit('change', this.value)
+    },
+    blurHandle() {
+      this.focusIndex = -1
+    },
+    focusItem(index) {
+      this.focusIndex = index
+      this.$refs.input.focus()
+    },
+  }
 }
 </script>
+
+<style lang="scss">
+$box-size: 3rem;
+$letter-space: .8rem;
+$font-size: 1.8rem;
+@keyframes bling {
+  from, to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+.apartLetterInput {
+  font-size: $font-size;
+  position: relative;
+  .input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    display: block;
+  }
+  .item {
+    display: inline-block;
+    vertical-align: middle;
+    outline: none;
+    width: $box-size;
+    height: $box-size;
+    line-height: $box-size;
+    border: 1px solid #78879c;
+    border-radius: .25rem;
+    text-align: center;
+    position: relative;
+    &.activated {
+      &::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: block;
+        width: 1px;
+        height: $box-size * .6;
+        background: #000;
+        content: '';
+        animation: bling 1s step-end infinite;
+      }
+    }
+    &:not(:last-child) {
+      margin-right: $letter-space;
+    }
+  }
+}
+</style>

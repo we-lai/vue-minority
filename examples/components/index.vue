@@ -1,5 +1,9 @@
 <template>
-  <div>首页</div>
+  <div>
+    <router-link tag="nav" to="/apart-letter">
+      apart-letter
+    </router-link>  
+  </div>
 </template>
 
 <script>
