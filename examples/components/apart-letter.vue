@@ -6,7 +6,6 @@
 
 <script>
 import ApartLetter from '../../src/apart-letter/src/apart-letter.vue'
-console.log(ApartLetter.name)
 export default {
   components: {
     [ApartLetter.name]: ApartLetter
